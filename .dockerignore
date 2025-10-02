@@ -1,0 +1,14 @@
+node_modules
+vendor
+.env
+.env.local
+.git
+.gitignore
+README.md
+Dockerfile
+.dockerignore
+render.yaml
+*.log
+storage/*.log
+!storage/framework/
+!storage/logs/
