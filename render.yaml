@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: laravel-postgres
+    env: php
+    region: oregon
+    plan: free
+    buildCommand: |
+      cp .env.example .env
+      composer install --optimize-autoloader --no-dev
+      php artisan key:generate
+      php artisan config:cache
+      php artisan route:cache
+      php artisan view:cache
+    startCommand: php artisan serve --port=$PORT --host=0.0.0.0
