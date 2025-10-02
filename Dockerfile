@@ -31,8 +31,17 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Install dependencies
 RUN composer install --optimize-autoloader --no-dev
 
-# Permissions
-RUN chmod -R 755 storage bootstrap/cache
+# Create storage directories if not exists
+RUN mkdir -p storage/logs \
+    && mkdir -p storage/framework/sessions \
+    && mkdir -p storage/framework/cache \
+    && mkdir -p storage/framework/views
+
+# Set ownership to www-data (Apache user)
+RUN chown -R www-data:www-data storage
+
+# Set permissions
+RUN chmod -R 775 storage
 
 # Set document root to /public
 RUN sed -i 's|/var/www/html|/var/www/html/public|' /etc/apache2/sites-available/000-default.conf
