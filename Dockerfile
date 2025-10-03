@@ -1,6 +1,6 @@
 FROM php:8.2-apache
 
-# Install system dependencies including pg_isready
+# Install system dependencies including pg_isready AND libpq-dev
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -10,7 +10,8 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     nano \
-    postgresql-client \ 
+    postgresql-client \     # For pg_isready in startup script
+    libpq-dev \             # 👈 Critical: For PHP PostgreSQL extension (this was missing!)
     && rm -rf /var/lib/apt/lists/*
 
 # Install required PHP extensions (PostgreSQL + Laravel deps)
