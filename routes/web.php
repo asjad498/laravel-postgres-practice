@@ -36,3 +36,29 @@ Route::get('/health', function (){
         ], 500);
     }
 });
+
+
+Route::get('/db/tables', function () {
+    try {
+        // Get all tables from the 'public' schema
+        $tables = DB::select("
+            SELECT tablename 
+            FROM pg_tables 
+            WHERE schemaname = 'public'
+        ");
+
+        $tableNames = collect($tables)->pluck('tablename');
+
+        return response()->json([
+            'status' => 'success',
+            'schema' => 'public',
+            'tables' => $tableNames,
+            'count' => $tableNames->count(),
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage(),
+        ], 500);
+    }
+});
