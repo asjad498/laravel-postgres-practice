@@ -13,8 +13,11 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+# Install required PHP extensions (including PostgreSQL)
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && docker-php-ext-install pdo_pgsql pgsql mbstring exif pcntl bcmath gd
 
 # Enable Apache mods
 RUN a2enmod rewrite
