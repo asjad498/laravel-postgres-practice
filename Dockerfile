@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     nano \
-    postgresql-client \  # 👈 For pg_isready
+    postgresql-client \ 
     && rm -rf /var/lib/apt/lists/*
 
 # Install required PHP extensions (PostgreSQL + Laravel deps)
