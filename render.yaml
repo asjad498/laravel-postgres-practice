@@ -50,6 +50,10 @@ services:
         fromDatabase:
           name: laravel-db
           property: password
+      - key: DB_SSLMODE
+        value: require
+      - key: DB_SCHEMA
+        value: public
 
     # Optional: Set custom port (Render uses PORT=10000 by default)
     # But Apache runs on port 80 internally — Render handles the proxy
