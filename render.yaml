@@ -7,16 +7,15 @@ services:
     # Use Docker runtime
     env: docker
 
-    # Health check endpoint (should return 200)
+    # Health check
     healthCheckPath: /api/users
 
-    # Build Command (optional if using Docker, but good for clarity)
-    buildCommand: echo "Using Dockerfile for build"
+    # Build command (optional but good for clarity)
+    buildCommand: echo "Using Dockerfile"
 
-    # Start Command: Run migrations AND start Apache
-    startCommand: >
-      php artisan migrate --force &&
-      apachectl -D FOREGROUND
+    # No startCommand needed — handled by CMD in Dockerfile
+    # If you want, keep it for override:
+    # startCommand: /usr/local/bin/start.sh
 
     # Environment Variables
     envVars:
@@ -25,7 +24,7 @@ services:
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
-        value: true  # Keep true temporarily to see errors; set to false later
+        value: true  # Keep true to see errors; set to false later
       - key: APP_KEY
         generateValue: true
       - key: DB_CONNECTION
@@ -54,6 +53,3 @@ services:
         value: require
       - key: DB_SCHEMA
         value: public
-
-    # Optional: Set custom port (Render uses PORT=10000 by default)
-    # But Apache runs on port 80 internally — Render handles the proxy
