@@ -16,3 +16,23 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/health', function (){
+    try {
+        // Try to connect to the database
+        DB::connection()->getPdo();
+        
+        return response()->json([
+            'status' => 'OK',
+            'database' => 'Connected',
+            'database_name' => DB::getDatabaseName(),
+            'driver' => config('database.default'),
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'ERROR',
+            'database' => 'Not Connected',
+            'message' => $e->getMessage(),
+        ], 500);
+    }
+});
