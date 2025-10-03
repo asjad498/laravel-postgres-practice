@@ -4,11 +4,19 @@ services:
     plan: free
     region: oregon
 
-    # 👇 This tells Render to use Docker
+    # Use Docker runtime
     env: docker
 
-    # Optional: Health check
+    # Health check endpoint (should return 200)
     healthCheckPath: /api/users
+
+    # Build Command (optional if using Docker, but good for clarity)
+    buildCommand: echo "Using Dockerfile for build"
+
+    # Start Command: Run migrations AND start Apache
+    startCommand: >
+      php artisan migrate --force &&
+      apachectl -D FOREGROUND
 
     # Environment Variables
     envVars:
@@ -17,7 +25,7 @@ services:
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
-        value: false
+        value: true  # Keep true temporarily to see errors; set to false later
       - key: APP_KEY
         generateValue: true
       - key: DB_CONNECTION
@@ -42,3 +50,6 @@ services:
         fromDatabase:
           name: laravel-db
           property: password
+
+    # Optional: Set custom port (Render uses PORT=10000 by default)
+    # But Apache runs on port 80 internally — Render handles the proxy
